@@ -1,0 +1,13 @@
+.menuItem,
+.menuItem:visited {
+  text-decoration: none;
+  color: black;
+  padding: 8px;
+  margin: 4px;
+  border-radius: 5px;
+  border: 1px solid gray
+}
+
+.menuItem:hover {
+  color: aquamarine;
+}

@@ -1,10 +1,10 @@
-import Layout from "./layout";
-import Order from "./pages/Order";
+import Layout from "./layout/Layout";
+import Order from "./pages/Order/Order";
 
 function App() {
   return (
     <Layout>
-      <Order />
+      <Order  />
     </Layout>
   );
 }
