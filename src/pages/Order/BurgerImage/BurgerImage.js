@@ -24,7 +24,7 @@ export default function BurgerImage({ meat, salad, cheese }) {
         <div className={classes.seeds1} />
         <div className={classes.seeds2} />
       </div>
-      
+      {(meat + cheese + salad === 0) && <div className={classes.empty}>Please Select Ingredients...</div>}
       {build('meat',meat)}
       {build('cheese',cheese)}
       {build('salad',salad)}

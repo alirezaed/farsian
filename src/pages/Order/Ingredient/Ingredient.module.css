@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-flow: row;
+  margin: auto;
+}
+
+.title {
+  width: 80px;
+}
+
+.container > * {
+  margin: 4px;
+}
