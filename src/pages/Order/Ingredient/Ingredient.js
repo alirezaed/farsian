@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React from "react";
 import classes from "./Ingredient.module.css";
 
-export default function Ingredient({ title, count, onAdd, onRemove }) {
+function Ingredient({ title, count, onAdd, onRemove }) {
+  console.log("ingredient rendered", title);
   const handleAdd = () => {
     if (count < 5) {
       onAdd(title.toLowerCase());
@@ -34,3 +35,6 @@ export default function Ingredient({ title, count, onAdd, onRemove }) {
     </div>
   );
 }
+
+// HOC High Ordered Component    function (Component) => Component
+export default React.memo(Ingredient);
