@@ -89,24 +89,69 @@ export default function Order() {
 
   const calcultePrice = () => {
     const fixedPrice = 5000;
-    const meatPrice = meat * 2000;
-    const cheesePrice = cheese * 1000;
-    const saladPrice = salad * 1000;
+    const meatPrice = meat * 5000;
+    const cheesePrice = cheese * 4000;
+    const saladPrice = salad * 2000;
     return fixedPrice + meatPrice + cheesePrice + saladPrice;
+  };
+  let intervalid;
+  const testThread = () => {
+    // console.log('clicked!')
+    // setTimeout(()=>{
+    //   console.log('function run shod!')
+    // }, 5000);
+    // console.log('aftet timeout code')
+
+    // console.log('clicked!')
+    // intervalid = setInterval(()=>{
+    //   console.log('function run shod!')
+    // }, 2000);
+    // console.log('aftet interval code')
+    console.log("clicked");
+    const p1 = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("666");
+      }, 3000);
+
+      setTimeout(() => {
+        reject("not found");
+      }, 2000);
+    });
+
+    p1.then((result) => {
+      console.log("Hoooora ", result);
+    })
+      .catch((error) => {
+        console.log("Noooooo ", error);
+      })
+      .finally(() => {
+        console.log("DONE");
+      });
+  };
+
+  const cancelInterval = () => {
+    clearInterval(intervalid);
   };
 
   const handleOrder = () => {
-    fetch("http://burgerbuilder.aedalat.ir/order/add", {
+    // 1 thread
+    const p1 = new Promise();
+
+    const bodyInObject = {
+      meat: meat,
+      salad: salad,
+      cheese: cheese,
+      total_price: calcultePrice(),
+      token: "",
+    };
+    const bodyInString = JSON.stringify(bodyInObject);
+
+    fetch("http://localhost:5012/orders/AddOrder", {
       method: "POST",
       headers: {
-        Authorisation: "tokenasdasdasdas",
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: {
-        meat: meat,
-        salad: salad,
-        cheese: cheese,
-      },
+      body: bodyInString,
     });
     // axios.post("/order/add", { meat: meat, salad: salad, cheese: cheese });
   };
@@ -136,6 +181,8 @@ export default function Order() {
       <div className={classes.center}>
         <Button title="Order" onClick={handleOrder} />
         <Button title="Reset" onClick={handleReset} />
+        <Button title="Test" onClick={testThread} />
+        <Button title="Cancel" onClick={cancelInterval} />
       </div>
     </div>
   );
