@@ -145,7 +145,7 @@ export default function Order() {
       token: "",
     };
     const bodyInString = JSON.stringify(bodyInObject);
-
+//https://burgerbuilderapi.aedalat.ir/
     fetch("http://localhost:5012/orders/AddOrder", {
       method: "POST",
       headers: {

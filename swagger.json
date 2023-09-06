@@ -1,0 +1,703 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "BurgerBuilderApi",
+    "version": "1.0"
+  },
+  "paths": {
+    "/users/login": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "Login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/LoginStatusViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "signup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SingUpViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SingUpStatusViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/users/recoverPassword": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "RecoverPassword",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RecoverEmailViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RecoverStatusModel"
+            }
+          }
+        }
+      }
+    },
+    "/users/isTokenValid": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "IsTokenValid",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TokenViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RecoverStatusModel"
+            }
+          }
+        }
+      }
+    },
+    "/users/confirmmail": {
+      "get": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "Confirmmail",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "/orders/AddOrder": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "AddOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddOrderViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AddOrderResultViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/orders/GetPagedAllOrders": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "GetPagedAllOrders",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetAllOrdersViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetAllOrders"
+            }
+          }
+        }
+      }
+    },
+    "/orders/GetAllOrders": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "GetAllOrders",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrderViewModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/GetOrder": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "GetOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetOrderViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OrderViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/orders/SaveComment": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SaveComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SaveCommentViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RecoverStatusModel"
+            }
+          }
+        }
+      }
+    },
+    "/safeOrders/AddOrder": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SafeAddOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddOrderViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AddOrderResultViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/safeOrders/GetPagedAllOrders": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SafeGetPagedAllOrders",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetAllOrdersViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GetAllOrders"
+            }
+          }
+        }
+      }
+    },
+    "/safeOrders/GetAllOrders": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SafeGetAllOrders",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/OrderViewModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/safeOrders/GetOrder": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SafeGetOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetOrderViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OrderViewModel"
+            }
+          }
+        }
+      }
+    },
+    "/safeOrders/SaveComment": {
+      "post": {
+        "tags": [
+          "BurgerBuilderApi"
+        ],
+        "operationId": "SafeSaveComment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SaveCommentViewModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RecoverStatusModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AddOrderResultViewModel": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        },
+        "order_number": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "AddOrderViewModel": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "meat": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "salad": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "cheese": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "total_price": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GetAllOrders": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderViewModel"
+          }
+        },
+        "total_count": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GetAllOrdersViewModel": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "sort_field": {
+          "type": "string"
+        },
+        "sort_order": {
+          "type": "string"
+        },
+        "page_index": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "page_size": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GetOrderViewModel": {
+      "type": "object",
+      "properties": {
+        "order_number": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "LoginStatusViewModel": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        }
+      }
+    },
+    "LoginViewModel": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "OrderViewModel": {
+      "type": "object",
+      "properties": {
+        "order_number": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "create_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "meat": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "salad": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "cheese": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "total_price": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "rate": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "RecoverEmailViewModel": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "RecoverStatusModel": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SaveCommentViewModel": {
+      "type": "object",
+      "properties": {
+        "order_number": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "SingUpStatusViewModel": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SingUpViewModel": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "fullname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "TokenViewModel": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
