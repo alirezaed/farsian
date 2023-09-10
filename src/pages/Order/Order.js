@@ -3,6 +3,8 @@ import Button from "../../components/Button/Button";
 import BurgerImage from "./BurgerImage/BurgerImage";
 import Ingredient from "./Ingredient/Ingredient";
 import classes from "./Order.module.css";
+import axios from "../../axios";
+import Loading from "../../components/Loading/Loading";
 
 export default function Order() {
   // const [meat, setMeat] = useState(0);
@@ -17,6 +19,9 @@ export default function Order() {
   const [ingredients, setIngredients] = useState(initState);
 
   const { meat, cheese, salad } = ingredients;
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   // const f = () => {};
   // const f2 = useCallback(() => {}, []);
 
@@ -95,6 +100,7 @@ export default function Order() {
     return fixedPrice + meatPrice + cheesePrice + saladPrice;
   };
   let intervalid;
+
   const testThread = () => {
     // console.log('clicked!')
     // setTimeout(()=>{
@@ -134,8 +140,7 @@ export default function Order() {
   };
 
   const handleOrder = () => {
-    // 1 thread
-    const p1 = new Promise();
+    setLoading(true);
 
     const bodyInObject = {
       meat: meat,
@@ -144,20 +149,21 @@ export default function Order() {
       total_price: calcultePrice(),
       token: "",
     };
-    const bodyInString = JSON.stringify(bodyInObject);
-//https://burgerbuilderapi.aedalat.ir/
-    fetch("http://localhost:5012/orders/AddOrder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: bodyInString,
-    });
-    // axios.post("/order/add", { meat: meat, salad: salad, cheese: cheese });
+
+    axios
+      .post("orders/Add2Order", bodyInObject)
+      .then((result) => {
+        setMessage(result.data.message);
+      })
+      .catch((e) => {
+        setMessage(e.message);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={classes.container}>
+      {loading && <Loading />}
       <BurgerImage meat={meat} salad={salad} cheese={cheese} />
       <Ingredient
         title="Meat"
@@ -179,11 +185,24 @@ export default function Order() {
       />
       <div className={classes.price}>Price : {calcultePrice()}</div>
       <div className={classes.center}>
-        <Button title="Order" onClick={handleOrder} />
+        <Button title="Order" disabled={loading} onClick={handleOrder} />
         <Button title="Reset" onClick={handleReset} />
         <Button title="Test" onClick={testThread} />
         <Button title="Cancel" onClick={cancelInterval} />
       </div>
+      {message && (
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "2em",
+            borderRadius: "5px",
+            padding: "8px",
+            backgroundColor: "lightgreen",
+          }}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }
