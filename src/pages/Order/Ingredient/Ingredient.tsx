@@ -1,7 +1,13 @@
 import React from "react";
 import classes from "./Ingredient.module.css";
 
-function Ingredient({ title, count, onAdd, onRemove }) {
+interface IngredientProps {
+  title: string;
+  count: number;
+  onAdd: (title:string) => void;
+  onRemove: (title:string) => void;
+}
+function Ingredient({ title, count, onAdd, onRemove }: IngredientProps) {
   console.log("ingredient rendered", title);
   const handleAdd = () => {
     if (count < 5) {

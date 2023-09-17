@@ -1,6 +1,12 @@
+import React from 'react';
 import classes from "./MenuItem.module.css";
 
-export default function MenuItem({ to, title }) {
+interface MenuItemProps {
+  to:string,
+  title:string
+}
+
+export default function MenuItem({ to, title }:MenuItemProps) {
   const handleClick = (e) => {
     e.preventDefault();
     window.history.pushState('', '', to);

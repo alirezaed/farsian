@@ -1,4 +1,6 @@
+import React from 'react';
 import "./Loading.css";
+
 export default function Loading() {
   return (
     <div
@@ -13,7 +15,7 @@ export default function Loading() {
         zIndex: "900",
       }}
     >
-      <div class="lds-ripple">
+      <div className="lds-ripple">
         <div></div>
         <div></div>
       </div>

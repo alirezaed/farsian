@@ -1,3 +1,4 @@
+import React from 'react';
 import logo from "./burgerlogo.png";
 import classes from './Logo.module.css';
 

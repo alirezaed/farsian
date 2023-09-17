@@ -1,3 +1,4 @@
+import React from "react";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button/Button";
 import BurgerImage from "./BurgerImage/BurgerImage";
@@ -6,27 +7,32 @@ import classes from "./Order.module.css";
 import axios from "../../axios";
 import Loading from "../../components/Loading/Loading";
 
+interface StateType {
+  cheese: number;
+  salad: number;
+  meat: number;
+}
 export default function Order() {
   // const [meat, setMeat] = useState(0);
   // const [cheese, setCheese] = useState(0);
   // const [salad, setSalad] = useState(0);
 
-  const initState = {
+  const initState: StateType = {
     meat: 0,
     cheese: 0,
     salad: 0,
   };
-  const [ingredients, setIngredients] = useState(initState);
+  const [ingredients, setIngredients] = useState<StateType>(initState);
 
   const { meat, cheese, salad } = ingredients;
-
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   // const f = () => {};
   // const f2 = useCallback(() => {}, []);
 
-  const handleAdd = useCallback((ingredient) => {
-    setIngredients((p) => ({ ...p, [ingredient]: p[ingredient] + 1 }));
+  const handleAdd = useCallback((ingredient:string) => {
+    setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] + 1 }));
 
     // switch (ingredient) {
     //   case "meat":
@@ -67,8 +73,8 @@ export default function Order() {
   // console.log(student["average"])
   // console.log(student[fieldName])
 
-  const handleRemove = useCallback((ingredient) => {
-    setIngredients((p) => ({ ...p, [ingredient]: p[ingredient] - 1 }));
+  const handleRemove = useCallback((ingredient:string) => {
+    setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] - 1 }));
     // switch (ingredient) {
     //   case "meat":
     //     setMeat((p) => p - 1);
@@ -99,7 +105,7 @@ export default function Order() {
     const saladPrice = salad * 2000;
     return fixedPrice + meatPrice + cheesePrice + saladPrice;
   };
-  let intervalid;
+  let intervalid:number;
 
   const testThread = () => {
     // console.log('clicked!')

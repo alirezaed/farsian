@@ -1,13 +1,19 @@
+import React, { ReactNode } from "react";
 import classes from "./BurgerImage.module.css";
 
-export default function BurgerImage({ meat, salad, cheese }) {
-  
-  const build = (ingredient,count) => {
-    const result = [];
+interface BurgerImageProps {
+  meat: number;
+  cheese: number;
+  salad: number;
+}
+
+export default function BurgerImage({ meat, salad, cheese }: BurgerImageProps) {
+  const build = (ingredient: string, count: number) => {
+    const result: ReactNode[] = [];
     for (let i = 1; i <= count; i++) {
       result.push(<div className={classes[ingredient]}></div>);
     }
-    return result
+    return result;
   };
 
   // const person = {
@@ -24,11 +30,13 @@ export default function BurgerImage({ meat, salad, cheese }) {
         <div className={classes.seeds1} />
         <div className={classes.seeds2} />
       </div>
-      {(meat + cheese + salad === 0) && <div className={classes.empty}>Please Select Ingredients...</div>}
-      {build('meat',meat)}
-      {build('cheese',cheese)}
-      {build('salad',salad)}
-      
+      {meat + cheese + salad === 0 && (
+        <div className={classes.empty}>Please Select Ingredients...</div>
+      )}
+      {build("meat", meat)}
+      {build("cheese", cheese)}
+      {build("salad", salad)}
+
       <div className={classes.bottombread}></div>
     </div>
   );
