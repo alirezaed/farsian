@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Fullname({ fname, lname, color, children }) {
+export default function Fullname({ fname, lname, color, children }: any) {
   const [counter, setCounter] = useState(0);
 
   const handleClick = () => {

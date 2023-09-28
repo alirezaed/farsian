@@ -1,17 +1,18 @@
 import React from "react";
 import classes from "./Ingredient.module.css";
+import { IngredientEnum } from "../../../types";
 
 interface IngredientProps {
-  title: string;
+  title: IngredientEnum;
   count: number;
-  onAdd: (title:string) => void;
-  onRemove: (title:string) => void;
+  onAdd: (title:IngredientEnum) => void;
+  onRemove: (title:IngredientEnum) => void;
 }
 function Ingredient({ title, count, onAdd, onRemove }: IngredientProps) {
   console.log("ingredient rendered", title);
   const handleAdd = () => {
     if (count < 5) {
-      onAdd(title.toLowerCase());
+      onAdd(title);
     }
     // setCounter((old) => {
     //   if (old < 5) {
@@ -23,7 +24,7 @@ function Ingredient({ title, count, onAdd, onRemove }: IngredientProps) {
 
   const handleRemove = () => {
     if (count > 0) {
-      onRemove(title.toLowerCase());
+      onRemove(title);
     }
     // setCounter((old) => {
     //   if (old > 0) {

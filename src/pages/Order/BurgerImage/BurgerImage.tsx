@@ -1,5 +1,14 @@
 import React, { ReactNode } from "react";
 import classes from "./BurgerImage.module.css";
+import { IngredientEnum, IngredientType } from "../../../types";
+
+// type IngredientValue = number;
+
+// type BurgerProps = {
+//   meat: IngredientValue;
+//   cheese: IngredientValue;
+//   salad: IngredientValue;
+// }
 
 interface BurgerImageProps {
   meat: number;
@@ -8,7 +17,17 @@ interface BurgerImageProps {
 }
 
 export default function BurgerImage({ meat, salad, cheese }: BurgerImageProps) {
-  const build = (ingredient: string, count: number) => {
+  
+
+  // let name:string = "ali";
+  // name = 2;
+
+  // let lastname= "hasani";
+  // lastname = 3;
+
+
+  const build = (ingredient: IngredientType, count: number) => {
+    console.log(ingredient)
     const result: ReactNode[] = [];
     for (let i = 1; i <= count; i++) {
       result.push(<div className={classes[ingredient]}></div>);
@@ -33,11 +52,11 @@ export default function BurgerImage({ meat, salad, cheese }: BurgerImageProps) {
       {meat + cheese + salad === 0 && (
         <div className={classes.empty}>Please Select Ingredients...</div>
       )}
-      {build("meat", meat)}
-      {build("cheese", cheese)}
-      {build("salad", salad)}
+      {build('meat', meat)}
+      {build(IngredientEnum.cheese, cheese)}
+      {build(IngredientEnum.salad, salad)}
 
-      <div className={classes.bottombread}></div>
+      <div style={{borderStyle:'double'}} className={classes.bottombread}></div>
     </div>
   );
 }

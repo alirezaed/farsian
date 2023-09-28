@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactEventHandler } from 'react';
 import classes from "./MenuItem.module.css";
 
 interface MenuItemProps {
@@ -7,7 +7,8 @@ interface MenuItemProps {
 }
 
 export default function MenuItem({ to, title }:MenuItemProps) {
-  const handleClick = (e) => {
+  
+  const handleClick = (e:React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     window.history.pushState('', '', to);
   };

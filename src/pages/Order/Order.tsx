@@ -6,16 +6,21 @@ import Ingredient from "./Ingredient/Ingredient";
 import classes from "./Order.module.css";
 import axios from "../../axios";
 import Loading from "../../components/Loading/Loading";
+import { IngredientEnum } from "../../types";
 
 interface StateType {
   cheese: number;
   salad: number;
   meat: number;
 }
+
+
+
 export default function Order() {
   // const [meat, setMeat] = useState(0);
   // const [cheese, setCheese] = useState(0);
   // const [salad, setSalad] = useState(0);
+  let ing:'salad'|'meat'|'cheese'|undefined;
 
   const initState: StateType = {
     meat: 0,
@@ -31,7 +36,7 @@ export default function Order() {
   // const f = () => {};
   // const f2 = useCallback(() => {}, []);
 
-  const handleAdd = useCallback((ingredient:string) => {
+  const handleAdd = useCallback((ingredient:IngredientEnum) => {
     setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] + 1 }));
 
     // switch (ingredient) {
@@ -67,13 +72,13 @@ export default function Order() {
   //   xx: 123123
   // }
   // console.log(student.xx)
-
+  
   // const fieldName = 'average';
   // console.log(student.average);
   // console.log(student["average"])
   // console.log(student[fieldName])
 
-  const handleRemove = useCallback((ingredient:string) => {
+  const handleRemove = useCallback((ingredient:IngredientEnum) => {
     setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] - 1 }));
     // switch (ingredient) {
     //   case "meat":
@@ -172,19 +177,19 @@ export default function Order() {
       {loading && <Loading />}
       <BurgerImage meat={meat} salad={salad} cheese={cheese} />
       <Ingredient
-        title="Meat"
+        title={IngredientEnum.meat}
         count={meat}
         onAdd={handleAdd}
         onRemove={handleRemove}
       />
       <Ingredient
-        title="Cheese"
+        title={IngredientEnum.cheese}
         count={cheese}
         onAdd={handleAdd}
         onRemove={handleRemove}
       />
       <Ingredient
-        title="Salad"
+        title={IngredientEnum.salad}
         count={salad}
         onAdd={handleAdd}
         onRemove={handleRemove}
