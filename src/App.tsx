@@ -1,18 +1,16 @@
 import * as React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders/Orders";
 
 const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="/order" element={<Order />} />
-        <Route path="/orders" element={<Orders />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+  <Routes>
+    <Route element={<Layout />}>
+      <Route path="/" element={<Order />} />
+      <Route path="/AllOrders" element={<Orders />} />
+    </Route>
+  </Routes>
 );
 
 export default App;

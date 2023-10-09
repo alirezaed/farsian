@@ -12,7 +12,7 @@ export default function Header() {
       <Logo />
       <div>
         <MenuItem title="All Orders" to="/AllOrders" />
-        <MenuItem title="Order" to="/Order" />
+        <MenuItem title="Order" to="/" />
       </div>
     </div>
   );
