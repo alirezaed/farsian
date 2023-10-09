@@ -162,7 +162,7 @@ export default function Order() {
     };
 
     axios
-      .post("orders/Add2Order", bodyInObject)
+      .post("orders/AddOrder", bodyInObject)
       .then((result) => {
         setMessage(result.data.message);
       })

@@ -5,6 +5,7 @@ import { Container, Grid, Box, Button, styled } from "@mui/material";
 import { MyContainer } from "./Orders.Style";
 import axios from "../../axios";
 import TableEx, { ColumnType } from "../../components/Table/Table";
+import Loading from "../../components/Loading/Loading";
 
 // breakpoint[ xs,sm,md,lg,xl ]
 
@@ -21,12 +22,15 @@ interface Order {
 }
 
 export default function Orders() {
-  const [data, setOrders] = useState<Order[]>([]);
-
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
   const load = () => {
-    axios.post("/orders/GetAllOrders").then((c) => {
-      setOrders(c.data);
-    });
+    axios
+      .post("/orders/GetAllOrders")
+      .then((c) => {
+        setOrders(c.data);
+      })
+      .finally(() => setLoading(false));
   };
 
   // [] Load Page
@@ -50,14 +54,37 @@ export default function Orders() {
       title: "Create Date",
     },
     {
-      fieldName: "meat",
-      title: "Meat",
-    }
+      fieldName: "total_price",
+      title: "Total Price",
+    },
+    {
+      fieldName: "comment",
+      title: "Comment",
+    },
+  ];
+
+  const columns2 = [
+    {
+      fieldName: "firstname",
+      title: "First",
+    },
+    {
+      fieldName: "lastname",
+      title: "Last",
+    },
+  ];
+
+  const data2 = [
+    { id: 1, firstname: "ali", lastname: "hasani" },
+    { id: 2, firstname: "reza", lastname: "hoseini" },
+    { id: 3, firstname: "mozhgan", lastname: "ghafari" },
   ];
 
   return (
     <MyContainer>
-      <TableEx data={data} columns={columns} />
+      {loading && <Loading />}
+      {/* <TableEx data={data2} columns={columns2} keyfield="id" /> */}
+      <TableEx data={orders} columns={columns} keyfield="order_number" />
     </MyContainer>
   );
 }
