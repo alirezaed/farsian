@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <div className={classes.header}>
       <div>
-        <MenuItem title="Sign In" to="/signin" />
+        <MenuItem title="Sign In" to="/Signin" />
       </div>
       <Logo />
       <div>
