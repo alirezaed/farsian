@@ -1,4 +1,5 @@
 import { Box, Button, Container, Grid, TextField, styled } from "@mui/material";
+import axios from "../../axios";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +11,25 @@ const FormContainer = styled("form")(({ theme }) => ({
 export default function SignIn() {
   const navigate = useNavigate();
 
+  const [values, setValues] = React.useState<{ [key: string]: string }>({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e: any) => {
+    setValues((current) => ({ ...current, [e.target.id]: e.target.value }));
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    axios.post("/users/login", values).then((c) => {
+      console.log(c);
+      if (c.data.status) {
+        localStorage.setItem("token", c.data.message);
+      }
+    });
+  };
+
   const handleSignup = () => {
     console.log("handle signup");
     navigate("/Signup");
@@ -17,15 +37,17 @@ export default function SignIn() {
 
   return (
     <Container>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <h1>Login</h1>
           </Grid>
           <Grid item xs={12}>
             <TextField
+              value={values.username}
+              onChange={handleChange}
               fullWidth
-              id="outlined-basic"
+              id="username"
               label="Username"
               variant="outlined"
             />
@@ -33,14 +55,18 @@ export default function SignIn() {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              id="outlined-basic"
+              value={values.password}
+              onChange={handleChange}
+              id="password"
               label="Password"
               variant="outlined"
               type="password"
             />
           </Grid>
           <Grid item>
-            <Button variant="outlined">Login</Button>
+            <Button type="submit" variant="outlined">
+              Login
+            </Button>
             Dont have user?{" "}
             <Button type="button" onClick={handleSignup}>
               Sign Up

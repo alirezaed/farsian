@@ -26,7 +26,11 @@ export default function Orders() {
   const [loading, setLoading] = useState(true);
   const load = () => {
     axios
-      .post("/orders/GetAllOrders")
+      .post("/SafeOrders/GetAllOrders", null, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
       .then((c) => {
         setOrders(c.data);
       })

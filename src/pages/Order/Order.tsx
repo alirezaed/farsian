@@ -14,13 +14,11 @@ interface StateType {
   meat: number;
 }
 
-
-
 export default function Order() {
   // const [meat, setMeat] = useState(0);
   // const [cheese, setCheese] = useState(0);
   // const [salad, setSalad] = useState(0);
-  let ing:'salad'|'meat'|'cheese'|undefined;
+  let ing: "salad" | "meat" | "cheese" | undefined;
 
   const initState: StateType = {
     meat: 0,
@@ -30,14 +28,17 @@ export default function Order() {
   const [ingredients, setIngredients] = useState<StateType>(initState);
 
   const { meat, cheese, salad } = ingredients;
-  
+
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   // const f = () => {};
   // const f2 = useCallback(() => {}, []);
 
-  const handleAdd = useCallback((ingredient:IngredientEnum) => {
-    setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] + 1 }));
+  const handleAdd = useCallback((ingredient: IngredientEnum) => {
+    setIngredients((p: StateType) => ({
+      ...p,
+      [ingredient]: p[ingredient] + 1,
+    }));
 
     // switch (ingredient) {
     //   case "meat":
@@ -72,14 +73,17 @@ export default function Order() {
   //   xx: 123123
   // }
   // console.log(student.xx)
-  
+
   // const fieldName = 'average';
   // console.log(student.average);
   // console.log(student["average"])
   // console.log(student[fieldName])
 
-  const handleRemove = useCallback((ingredient:IngredientEnum) => {
-    setIngredients((p: StateType) => ({ ...p, [ingredient]: p[ingredient] - 1 }));
+  const handleRemove = useCallback((ingredient: IngredientEnum) => {
+    setIngredients((p: StateType) => ({
+      ...p,
+      [ingredient]: p[ingredient] - 1,
+    }));
     // switch (ingredient) {
     //   case "meat":
     //     setMeat((p) => p - 1);
@@ -110,7 +114,7 @@ export default function Order() {
     const saladPrice = salad * 2000;
     return fixedPrice + meatPrice + cheesePrice + saladPrice;
   };
-  let intervalid:number;
+  let intervalid: number;
 
   const testThread = () => {
     // console.log('clicked!')
@@ -162,7 +166,11 @@ export default function Order() {
     };
 
     axios
-      .post("orders/AddOrder", bodyInObject)
+      .post("SafeOrders/AddOrder", bodyInObject, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        },
+      })
       .then((result) => {
         setMessage(result.data.message);
       })
