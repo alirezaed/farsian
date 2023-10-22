@@ -1,7 +1,12 @@
 import { Box, Button, Container, Grid, TextField, styled } from "@mui/material";
 import axios from "../../axios";
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { LoadingButton } from "@mui/lab";
+import ToastMessage from "../../components/ToastMessage/ToastMessage";
+import { useNavigate } from "react-router-dom";
 
 const FormContainer = styled("form")(({ theme }) => ({
   margin: "auto",
@@ -16,13 +21,40 @@ interface Inputs {
   confirmpassword: string;
   fullname: string;
 }
+
+interface ServerResult {
+  message: string;
+  status: boolean;
+}
 export default function SignUp() {
+  const [loading, setLoading] = React.useState(false);
+  const [serverResult, setServerResult] = React.useState<ServerResult>();
+  const navigate = useNavigate();
+  const schema = yup
+    .object({
+      email: yup.string().required("This field is required"),
+      username: yup.string().required("This field is required"),
+      password: yup.string().required("This field is required"),
+      confirmpassword: yup
+        .string()
+        .required("This field is required")
+        .oneOf([yup.ref("password")], "Passwords do not match"),
+      fullname: yup.string().required("This field is required"),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
+    control,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      fullname: "",
+    },
+    resolver: yupResolver(schema),
+  });
 
   // const [values, setValues] = React.useState<{ [field: string]: string }>({
   //   fullname: "",
@@ -44,7 +76,7 @@ export default function SignUp() {
   //   email: "",
   // });
 
-  const handleSignup = (data: any) => {
+  const handleSignup: SubmitHandler<Inputs> = (data: any) => {
     // e.preventDefault();
     // if (!values.fullname || values.fullname.length < 5) {
     //   setErrors((p) => ({ ...p, fullname: "This field is required." }));
@@ -52,7 +84,9 @@ export default function SignUp() {
     // } else {
     //   setErrors((p) => ({ ...p, fullname: "" }));
     // }
-    console.log(data);
+    // console.log(data);
+    setLoading(true);
+    // setServerResult(undefined);
     axios
       .post("/users/signup", {
         username: data.username,
@@ -60,8 +94,15 @@ export default function SignUp() {
         fullname: data.fullname,
         email: data.email,
       })
-      .then((c) => console.log(c))
-      .catch((e) => console.error(e));
+      .then((c) => {
+        console.log(c);
+        setServerResult(c.data);
+        if (c.data.status) {
+          navigate("/");
+        }
+      })
+      .catch((e) => console.error(e))
+      .finally(() => setLoading(false));
   };
 
   // const fieldProps = (fieldName: string) => ({
@@ -71,62 +112,105 @@ export default function SignUp() {
   //   helperText: errors[fieldName],
   //   error: !!errors[fieldName],
   // });
-  console.log(errors);
   return (
     <Container>
+      <ToastMessage
+        open={!!serverResult}
+        message={serverResult?.message}
+        status={serverResult?.status}
+      />
+
       <FormContainer onSubmit={handleSubmit(handleSignup)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <h1>Sign Up</h1>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...register("fullname", { required: true })}
-              fullWidth
-              label="Full Name"
-              variant="outlined"
+            <Controller
+              name="fullname"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  label="Full Name"
+                  variant="outlined"
+                  helperText={errors.fullname?.message}
+                  error={!!errors.fullname}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...register("email")}
-              type="email"
-              fullWidth
-              label="Email"
-              variant="outlined"
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  label="Email"
+                  variant="outlined"
+                  helperText={errors.email?.message}
+                  error={!!errors.email}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...register("username")}
-              fullWidth
-              autoComplete="asd"
-              label="Username"
-              variant="outlined"
+            <Controller
+              name="username"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  label="Username"
+                  variant="outlined"
+                  helperText={errors.username?.message}
+                  error={!!errors.username}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...register("password")}
-              fullWidth
-              label="Password"
-              variant="outlined"
-              type="password"
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  helperText={errors.password?.message}
+                  error={!!errors.password}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              {...register("confirmpassword")}
-              fullWidth
-              label="Confirm Password"
-              variant="outlined"
-              type="password"
+            <Controller
+              name="confirmpassword"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  type="password"
+                  label="Confirm Password"
+                  variant="outlined"
+                  helperText={errors.confirmpassword?.message}
+                  error={!!errors.confirmpassword}
+                  {...field}
+                />
+              )}
             />
           </Grid>
           <Grid item>
-            <Button type="submit" onClick={handleSignup} variant="outlined">
+            <LoadingButton loading={loading} type="submit" variant="outlined">
               Sign Up
-            </Button>
+            </LoadingButton>
           </Grid>
         </Grid>
       </FormContainer>
