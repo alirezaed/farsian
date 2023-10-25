@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 import classes from "./Button.module.css";
+import { useThemeContext } from "../../context/ThemeContext";
 
-interface ButtonProps{
-  title:string, 
-  onClick:()=>void, 
-  disabled?: boolean
+interface ButtonProps {
+  title: string;
+  onClick: () => void;
+  disabled?: boolean;
 }
 
-export default function Button({ title, onClick, disabled }:ButtonProps) {
-
+export default function Button({ title, onClick, disabled }: ButtonProps) {
   // const age = 12;
 
   // let age2: boolean[] = [true,false];
@@ -24,10 +24,15 @@ export default function Button({ title, onClick, disabled }:ButtonProps) {
   //   city:string,
   //   region:number
   // }
-  
+
+  const { theme } = useThemeContext();
 
   return (
-    <button className={classes.button} disabled={disabled} onClick={onClick}>
+    <button
+      className={theme == "light" ? classes.button : classes.button_dark}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {title}
     </button>
   );

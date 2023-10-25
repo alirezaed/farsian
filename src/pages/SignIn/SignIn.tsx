@@ -2,6 +2,7 @@ import { Box, Button, Container, Grid, TextField, styled } from "@mui/material";
 import axios from "../../axios";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthentication } from "../../context/AuthenticationContext";
 
 const FormContainer = styled("form")(({ theme }) => ({
   margin: "auto",
@@ -10,6 +11,7 @@ const FormContainer = styled("form")(({ theme }) => ({
 }));
 export default function SignIn() {
   const navigate = useNavigate();
+  const { login } = useAuthentication();
 
   const [values, setValues] = React.useState<{ [key: string]: string }>({
     username: "",
@@ -25,7 +27,7 @@ export default function SignIn() {
     axios.post("/users/login", values).then((c) => {
       console.log(c);
       if (c.data.status) {
-        localStorage.setItem("token", c.data.message);
+        login(c.data.message);
       }
     });
   };

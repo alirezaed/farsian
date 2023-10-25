@@ -8,3 +8,16 @@
   cursor: pointer;
   margin: auto;
 }
+
+.button_dark {
+  max-width: 100px;
+  border: 1px solid brown;
+  background-color: midnightblue;
+  color: white;
+  border-radius: 4px;
+  height: 40px;
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: auto;
+}
