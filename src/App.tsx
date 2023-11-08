@@ -5,22 +5,19 @@ import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders/Orders";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
-import { ThemeContextProvider } from "./context/ThemeContext";
-import { AuthenticationContextProvider } from "./context/AuthenticationContext";
+import { AppContext } from "./context/AppContext";
 
 const App = () => (
-  <ThemeContextProvider>
-    <AuthenticationContextProvider>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Order />} />
-          <Route path="/AllOrders" element={<Orders />} />
-          <Route path="/Signin" element={<SignIn />} />
-          <Route path="/Signup" element={<SignUp />} />
-        </Route>
-      </Routes>
-    </AuthenticationContextProvider>
-  </ThemeContextProvider>
+  <AppContext>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Order />} />
+        <Route path="/AllOrders" element={<Orders />} />
+        <Route path="/Signin" element={<SignIn />} />
+        <Route path="/Signup" element={<SignUp />} />
+      </Route>
+    </Routes>
+  </AppContext>
 );
 
 export default App;

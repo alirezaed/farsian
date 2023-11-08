@@ -7,6 +7,7 @@ import classes from "./Order.module.css";
 import axios from "../../axios";
 import Loading from "../../components/Loading/Loading";
 import { IngredientEnum } from "../../types";
+import { usePersistState } from "../../hooks/usePersistState";
 
 interface StateType {
   cheese: number;
@@ -25,7 +26,7 @@ export default function Order() {
     cheese: 0,
     salad: 0,
   };
-  const [ingredients, setIngredients] = useState<StateType>(initState);
+  const [ingredients, setIngredients] = usePersistState("ingre", initState);
 
   const { meat, cheese, salad } = ingredients;
 
@@ -168,7 +169,7 @@ export default function Order() {
     axios
       .post("SafeOrders/AddOrder", bodyInObject, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token")
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((result) => {

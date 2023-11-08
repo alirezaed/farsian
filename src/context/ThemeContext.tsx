@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useContext, useState } from "react";
+import { usePersistState } from "../hooks/usePersistState";
 
 const ThemeContext = React.createContext({
   theme: "",
@@ -6,9 +7,11 @@ const ThemeContext = React.createContext({
 });
 
 export function ThemeContextProvider({ children }: PropsWithChildren) {
-  const [theme, setTheme] = useState<string>("light");
+  const [theme, setTheme] = usePersistState("theme", "light");
 
-  const changeTheme = (newTheme: string) => setTheme(newTheme);
+  const changeTheme = (newTheme: string) => {
+    setTheme(newTheme);
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, changeTheme }}>

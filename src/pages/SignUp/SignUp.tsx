@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { LoadingButton } from "@mui/lab";
 import ToastMessage from "../../components/ToastMessage/ToastMessage";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../context/ToastContext";
 
 const FormContainer = styled("form")(({ theme }) => ({
   margin: "auto",
@@ -28,7 +29,7 @@ interface ServerResult {
 }
 export default function SignUp() {
   const [loading, setLoading] = React.useState(false);
-  const [serverResult, setServerResult] = React.useState<ServerResult>();
+  const { showSuccessMessage, showErrorMessage } = useToast();
   const navigate = useNavigate();
   const schema = yup
     .object({
@@ -96,9 +97,12 @@ export default function SignUp() {
       })
       .then((c) => {
         console.log(c);
-        setServerResult(c.data);
+
         if (c.data.status) {
           navigate("/");
+          showSuccessMessage(c.data.message);
+        } else {
+          showErrorMessage(c.data.message);
         }
       })
       .catch((e) => console.error(e))
@@ -114,12 +118,6 @@ export default function SignUp() {
   // });
   return (
     <Container>
-      <ToastMessage
-        open={!!serverResult}
-        message={serverResult?.message}
-        status={serverResult?.status}
-      />
-
       <FormContainer onSubmit={handleSubmit(handleSignup)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
