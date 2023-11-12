@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button/Button";
 import BurgerImage from "./BurgerImage/BurgerImage";
@@ -10,15 +10,71 @@ import { IngredientEnum } from "../../types";
 import { usePersistState } from "../../hooks/usePersistState";
 
 interface StateType {
-  cheese: number;
-  salad: number;
-  meat: number;
+  [field: string]: number;
+}
+
+interface GeneralState {
+  ingredients: StateType;
+  loading: boolean;
+  message: string;
+}
+
+interface Action {
+  type: "LOADING" | "INGREDIENTS" | "MESSAGE" | "RESET";
+  payload: any;
+}
+
+// const LOADING: string = "LOADING";
+// const MESSAGE: string = "MESSAGE";
+// const INGREDIENTS: string = "INGREDIENTS";
+
+function reducer(currentState: GeneralState, action: Action): GeneralState {
+  switch (action.type) {
+    case "LOADING":
+      return {
+        ingredients: {
+          ...currentState.ingredients,
+        },
+        loading: action.payload,
+        message: currentState.message,
+      };
+
+    case "MESSAGE":
+      return {
+        ingredients: {
+          ...currentState.ingredients,
+        },
+        loading: currentState.loading,
+        message: action.payload,
+      };
+
+    case "INGREDIENTS":
+      const { field, operation } = action.payload;
+      const { ingredients } = currentState;
+      return {
+        ingredients: {
+          ...ingredients,
+          [field]: ingredients[field] + (operation === "+" ? 1 : -1),
+        },
+        loading: currentState.loading,
+        message: currentState.message,
+      };
+
+    case "RESET":
+      return {
+        ...currentState,
+        ingredients: {
+          meat: 0,
+          cheese: 0,
+          salad: 0,
+        },
+      };
+    default:
+      return currentState;
+  }
 }
 
 export default function Order() {
-  // const [meat, setMeat] = useState(0);
-  // const [cheese, setCheese] = useState(0);
-  // const [salad, setSalad] = useState(0);
   let ing: "salad" | "meat" | "cheese" | undefined;
 
   const initState: StateType = {
@@ -26,85 +82,55 @@ export default function Order() {
     cheese: 0,
     salad: 0,
   };
-  const [ingredients, setIngredients] = usePersistState("ingre", initState);
+  const initState2: GeneralState = {
+    ingredients: initState,
+    loading: false,
+    message: "",
+  };
+  const [state, dispatch] = useReducer(reducer, initState2);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [message, setMessage] = useState<string>("");
+  // const [ingredients, setIngredients] = usePersistState("ingre", initState);
 
-  const { meat, cheese, salad } = ingredients;
-
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
-  // const f = () => {};
-  // const f2 = useCallback(() => {}, []);
+  const { meat, cheese, salad } = state.ingredients;
 
   const handleAdd = useCallback((ingredient: IngredientEnum) => {
-    setIngredients((p: StateType) => ({
-      ...p,
-      [ingredient]: p[ingredient] + 1,
-    }));
-
-    // switch (ingredient) {
-    //   case "meat":
-    //     // setMeat((p) => p + 1);
-    //     setIngredients((p) => ({ ...p, meat: p.meat + 1 }));
-
-    //     break;
-    //   case "cheese":
-    //     // setCheese((p) => p + 1);
-    //     setIngredients((p) => ({ ...p, cheese: p.cheese + 1 }));
-    //     break;
-    //   case "salad":
-    //     // setSalad((p) => p + 1);
-    //     setIngredients((p) => ({ ...p, salad: p.salad + 1 }));
-    //     break;
-    //   default:
-    //     break;
-    // }
+    // setIngredients((p: StateType) => ({
+    //   ...p,
+    //   [ingredient]: p[ingredient] + 1,
+    // }));
+    dispatch({
+      type: "INGREDIENTS",
+      payload: {
+        field: ingredient,
+        operation: "+",
+      },
+    });
   }, []);
 
-  // const field3 = "xx"
-
-  // const student = {
-  //   'average':20,
-  //   'name':'213123',
-  //   [field3]: 123123,
-  // }
-
-  // const student2 = {
-  //   'average':20,
-  //   'name':'213123',
-  //   xx: 123123
-  // }
-  // console.log(student.xx)
-
-  // const fieldName = 'average';
-  // console.log(student.average);
-  // console.log(student["average"])
-  // console.log(student[fieldName])
-
   const handleRemove = useCallback((ingredient: IngredientEnum) => {
-    setIngredients((p: StateType) => ({
-      ...p,
-      [ingredient]: p[ingredient] - 1,
-    }));
-    // switch (ingredient) {
-    //   case "meat":
-    //     setMeat((p) => p - 1);
-    //     break;
-    //   case "cheese":
-    //     setCheese((p) => p - 1);
-    //     break;
-    //   case "salad":
-    //     setSalad((p) => p - 1);
-    //     break;
-    //   default:
-    //     break;
-    // }
+    // setIngredients((p: StateType) => ({
+    //   ...p,
+    //   [ingredient]: p[ingredient] - 1,
+    // }));
+    dispatch({
+      type: "INGREDIENTS",
+      payload: {
+        field: ingredient,
+        operation: "-",
+      },
+    });
   }, []);
 
   const handleReset = () => {
-    setIngredients({
-      meat: 0,
-      cheese: 0,
-      salad: 0,
+    // setIngredients({
+    //   meat: 0,
+    //   cheese: 0,
+    //   salad: 0,
+    // });
+    dispatch({
+      type: "RESET",
+      payload: undefined,
     });
   };
 
@@ -156,7 +182,10 @@ export default function Order() {
   };
 
   const handleOrder = () => {
-    setLoading(true);
+    dispatch({
+      type: "LOADING",
+      payload: true,
+    });
 
     const bodyInObject = {
       meat: meat,
@@ -173,17 +202,28 @@ export default function Order() {
         },
       })
       .then((result) => {
-        setMessage(result.data.message);
+        dispatch({
+          type: "MESSAGE",
+          payload: result.data.message,
+        });
       })
       .catch((e) => {
-        setMessage(e.message);
+        dispatch({
+          type: "MESSAGE",
+          payload: e.message,
+        });
       })
-      .finally(() => setLoading(false));
+      .finally(() =>
+        dispatch({
+          type: "LOADING",
+          payload: false,
+        })
+      );
   };
 
   return (
     <div className={classes.container}>
-      {loading && <Loading />}
+      {state.loading && <Loading />}
       <BurgerImage meat={meat} salad={salad} cheese={cheese} />
       <Ingredient
         title={IngredientEnum.meat}
@@ -205,12 +245,12 @@ export default function Order() {
       />
       <div className={classes.price}>Price : {calcultePrice()}</div>
       <div className={classes.center}>
-        <Button title="Order" disabled={loading} onClick={handleOrder} />
+        <Button title="Order" disabled={state.loading} onClick={handleOrder} />
         <Button title="Reset" onClick={handleReset} />
         <Button title="Test" onClick={testThread} />
         <Button title="Cancel" onClick={cancelInterval} />
       </div>
-      {message && (
+      {state.message && (
         <p
           style={{
             textAlign: "center",
@@ -220,7 +260,7 @@ export default function Order() {
             backgroundColor: "lightgreen",
           }}
         >
-          {message}
+          {state.message}
         </p>
       )}
     </div>

@@ -12,9 +12,11 @@ export function usePersistState(key: string, defaultState: any) {
 
   function changeData(data: any) {
     if (typeof data === "function") {
-      const newData = data(statedata);
-      localStorage.setItem(key, JSON.stringify(newData));
-      setData(newData);
+      setData((current: any) => {
+        const newData = data(current);
+        localStorage.setItem(key, JSON.stringify(newData));
+        return newData;
+      });
     } else if (typeof data === "object") {
       localStorage.setItem(key, JSON.stringify(data));
       setData(data);

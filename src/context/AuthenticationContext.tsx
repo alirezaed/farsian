@@ -1,9 +1,16 @@
-import React, { PropsWithChildren, useContext, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import axios from "../axios";
+
 const AuthenticationContext = React.createContext({
   isLogin: false,
-  fullname: '',
+  fullname: "",
   login: (token: string) => {},
   logout: () => {},
 });
@@ -12,6 +19,19 @@ export function AuthenticationContextProvider({ children }: PropsWithChildren) {
   const [isLogin, setIsLogin] = useState(false);
   const [fullname, setFullName] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!isLogin && token) {
+      axios.post("/users/isTokenValid", { token }).then((c) => {
+        if (c.data.status) {
+          login(token);
+        } else {
+          logout();
+        }
+      });
+    }
+  }, []);
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
