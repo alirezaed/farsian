@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Group from "./Group";
 import SearchBox from "./SearchBox";
+import reducer from "./reducer";
+import { changeKeywordAction, changeOnlyStockedAction } from "./actions";
 
 const list = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
@@ -12,12 +14,17 @@ const list = [
 ];
 
 export default function Review() {
-  const [onlyStocked, setOnlyStocked] = useState(false);
-  const [keyword, setKeyword] = useState("");
+  // const [onlyStocked, setOnlyStocked] = useState(false);
+  // const [keyword, setKeyword] = useState("");
+
+  const [{ onlyStocked, keyword }, dispatch] = useReducer(reducer, {
+    onlyStocked: false,
+    keyword: "",
+  });
 
   useEffect(() => {
     console.log("useeffect keyword");
-  }, [keyword]);
+  }, []);
 
   useEffect(() => {
     console.log("useeffect");
@@ -42,6 +49,14 @@ export default function Review() {
     ],
   });
 
+  const handleKeywordChange = (newKeyword: string) => {
+    dispatch(changeKeywordAction(newKeyword));
+  };
+
+  const handleOnlyStockedChange = (newOnlyStocked: boolean) => {
+    dispatch(changeOnlyStockedAction(newOnlyStocked));
+  };
+
   const uniqeCategories = [...new Set(list.map((item) => item.category))];
 
   return (
@@ -49,8 +64,8 @@ export default function Review() {
       <SearchBox
         keyword={keyword}
         onlyStocked={onlyStocked}
-        onKeywordChanged={setKeyword}
-        onOnlyStockedChanged={setOnlyStocked}
+        onKeywordChanged={handleKeywordChange}
+        onOnlyStockedChanged={handleOnlyStockedChange}
       />
       <div>
         <span style={{ margin: "10px" }}>Title</span>
