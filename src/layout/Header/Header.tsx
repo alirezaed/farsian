@@ -5,12 +5,18 @@ import MenuItem from "./MenuItem/MenuItem";
 import { Button, Switch } from "@mui/material";
 import SwitchTheme from "./SwitchTheme";
 import { useAuthentication } from "../../context/AuthenticationContext";
+import { useDispatch, useSelector } from "react-redux";
+import { Store } from "../../store/type";
+import { logout } from "../../store/slice/authenticationSlice";
 
 export default function Header() {
-  const { isLogin, fullname, logout } = useAuthentication();
+  const isLogin = useSelector<Store, boolean>(state=>state.auth.isLogin);
+  const fullname = useSelector<Store, string>(state=>state.auth.fullname);
+  
+  const dispatch = useDispatch();
 
   const handleLogOut = () => {
-    logout();
+    dispatch(logout())
   };
 
   return (

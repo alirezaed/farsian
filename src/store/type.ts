@@ -1,5 +1,5 @@
 export interface Store{
-  authentication:AuthenticationStore,
+  auth:AuthenticationStore,
 }
 
 export interface AuthenticationStore{

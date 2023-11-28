@@ -2,8 +2,10 @@ import { Box, Button, Container, Grid, TextField, styled } from "@mui/material";
 import axios from "../../axios";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useAuthentication } from "../../context/AuthenticationContext";
 import { useToast } from "../../context/ToastContext";
+import { login } from "../../store/slice/authenticationSlice";
 
 const FormContainer = styled("form")(({ theme }) => ({
   margin: "auto",
@@ -12,7 +14,7 @@ const FormContainer = styled("form")(({ theme }) => ({
 }));
 export default function SignIn() {
   const navigate = useNavigate();
-  const { login } = useAuthentication();
+  const dispatch = useDispatch();
   const { showSuccessMessage, showErrorMessage } = useToast();
   const [values, setValues] = React.useState<{ [key: string]: string }>({
     username: "",
@@ -29,7 +31,8 @@ export default function SignIn() {
       console.log(c);
       if (c.data.status) {
         showSuccessMessage("Welcome!");
-        login(c.data.message);
+        dispatch(login(c.data.message));
+        navigate('/')
       } else {
         showErrorMessage(c.data.message);
       }
